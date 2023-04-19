@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# Adds `~/.local/bin` to $PATH
+export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
+
 # Default programs:
 EDITOR=vim
 

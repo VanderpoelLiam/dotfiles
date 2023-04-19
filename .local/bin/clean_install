@@ -1,0 +1,19 @@
+#!/bin/sh
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
+# Delete unused directories from $HOME
+xdg-user-dirs-update --set MUSIC ~
+xdg-user-dirs-update --set VIDEOS ~
+xdg-user-dirs-update --set TEMPLATES ~
+xdg-user-dirs-update --set DOCUMENTS ~ 
+xdg-user-dirs-update --set DESKTOP ~ 
+
+rm -r ~/Music/
+rm -r ~/Videos/
+rm -r ~/Templates/
+rm -r ~/Documents/
+rm -r ~/Desktop/
+rm .bash_history
+rm .bash_logout
+rm .bashrc
