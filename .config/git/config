@@ -1,0 +1,8 @@
+[credential]
+	helper = /usr/local/bin/git-credential-manager
+	credentialStore = gpg
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[user]
+	email = fake_email@email.com
+	name = Liam van der Poel
