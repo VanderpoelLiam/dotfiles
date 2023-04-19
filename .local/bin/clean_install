@@ -17,3 +17,39 @@ rm -r ~/Desktop/
 rm .bash_history
 rm .bash_logout
 rm .bashrc
+
+# Clean up $HOME
+mkdir ~/.config/zsh/history && touch ~/.config/zsh/history 
+mkdir ~/.config/wget && touch ~/.config/wget/wget-hsts
+sudo mkdir "$XDG_STATE_HOME"/less && sudo touch "$XDG_STATE_HOME"/less/history
+
+# Install pyenv
+curl https://pyenv.run | bash
+
+# Install zsh
+sudo apt install zsh -y
+chsh -s $(which zsh)
+
+# Swap caps lock and esc
+sudo echo 'XKBOPTIONS="caps:swapescape"' >> /etc/default/keyboard
+
+# Need to reboot at this point
+sudo reboot
+
+# Install oh-my-zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Install zsh plugins
+sudo apt install autojump -y
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
+git clone https://github.com/unixorn/fzf-zsh-plugin.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-zsh-plugin
+
+# Install Powerline Fonts
+git clone https://github.com/ryanoasis/nerd-fonts.git
+cd nerd-fonts
+./install.sh Meslo
+cd ..
+rm -rf nerd-fonts
+fc-cache -vf
