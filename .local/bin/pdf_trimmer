@@ -1,0 +1,67 @@
+#!/usr/bin/env sh
+
+program_name=$0
+num_required_args=1
+
+error() {
+  echo "[ERROR]: $*" >&2
+  exit 1
+}
+
+usage() {
+  echo ""
+  echo "USAGE: $program_name [-s start -e end] filename"
+  echo "  filename"
+  echo "  -s start     start page range"
+  echo "  -e end       end page range" 
+  echo "  -v           enable verbosity"
+  echo "  -h           display help"
+  echo ""
+  echo "DESCRIPTION: Extract the specified page range from the pdf."
+  echo "By default extract all the pages to a new file named"
+  echo "<filename>_trimmed.pdf."
+  echo "The start and end page ranges default to the first and last"
+  echo "page of the pdf respectively. The page ranges are inclusive"
+  echo "i.e. -s 10 -e 20 test.pdf includes pages 10 and 20"
+  echo ""
+}
+
+start=1
+end='end'
+
+parse_args() {
+  while getopts 'hve:s:' flag; do
+    case "${flag}" in
+      s) start="${OPTARG}" ;;
+      e) end="${OPTARG}" ;;
+      h) usage; exit 1 ;;
+      v) verbose='true' ;;
+      *) error "Unexpected option" ;;
+    esac
+  done
+
+  shift "$((OPTIND - 1))"
+
+ if [ $# -lt $num_required_args ]; then
+   usage
+   error "Please provide all required arguments"
+ fi
+
+ filename=$1
+}
+
+parse_args "$@"
+
+cd "$(dirname "$0")" || exit
+
+log() {
+    $verbose && echo "$*";
+}
+
+main() {
+    log "Extracting pages $start until $end inclusive from $filename"
+    filename=${filename%".pdf"}
+    pdftk "$filename".pdf cat "$start"-"$end" output "$filename"_trimmed.pdf
+}
+
+main "$@"
